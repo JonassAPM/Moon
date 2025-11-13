@@ -14,7 +14,6 @@ body {
     align-items: center;
 }
 
-/* Efecto VHS principal */
 body::before {
     content: '';
     position: fixed;
@@ -67,7 +66,6 @@ body::before {
     }
 }
 
-/* Efecto de escaneo VHS */
 body::after {
     content: '';
     position: fixed;
@@ -116,7 +114,6 @@ body::after {
     cursor: grabbing;
 }
 
-/* Controles Principales */
 #controls {
     position: absolute;
     top: 20px;
@@ -125,7 +122,6 @@ body::after {
     z-index: 100;
 }
 
-/* Proteger el botón NASA de los efectos VHS y glitch */
 #nasa-mode {
     position: relative;
     z-index: 150 !important;
@@ -135,7 +131,6 @@ body::after {
     filter: none !important;
 }
 
-/* Anular todos los efectos que podrían afectar al botón */
 #nasa-mode::before,
 #nasa-mode::after {
     display: none !important;
@@ -199,7 +194,6 @@ body::after {
     left: 100%;
 }
 
-/* Paneles de Control */
 .control-panel {
     position: absolute;
     background: rgba(0, 0, 0, 0.85);
@@ -263,7 +257,6 @@ body::after {
     font-weight: bold;
 }
 
-/* Posicionamiento de Paneles */
 #mission-control {
     top: 80px;
     left: 20px;
@@ -288,7 +281,6 @@ body::after {
     min-width: 200px;
 }
 
-/* Botones de Misión */
 .mission-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -313,7 +305,6 @@ body::after {
     transform: scale(1.05);
 }
 
-/* Fases Lunares */
 .phases-container {
     display: flex;
     flex-direction: column;
@@ -336,7 +327,6 @@ body::after {
     box-shadow: 0 0 8px #0ff;
 }
 
-/* Simulador de Gravedad */
 .gravity-content {
     display: flex;
     flex-direction: column;
@@ -359,7 +349,6 @@ body::after {
     min-height: 20px;
 }
 
-/* Holograma */
 #hologram-display {
     position: fixed;
     top: 44%;
@@ -492,7 +481,6 @@ body::after {
     display: none !important;
 }
 
-/* Efectos Visuales */
 .scanlines {
     position: fixed;
     top: 0;
@@ -537,7 +525,6 @@ body::after {
     z-index: 15;
 }
 
-/* EFECTO GLITCH COMPLETO MEJORADO */
 .glitch-effect {
     position: fixed;
     top: 0;
@@ -557,7 +544,7 @@ body::after {
         transform: translateX(0) translateY(0) scale(1) rotate(0deg);
         filter: hue-rotate(0deg) brightness(1) contrast(1);
     }
-    /* GLITCH 1 - Reducido */
+
     2%, 3% {
         opacity: 0.2;
         transform: translateX(-5px) translateY(-2px) scale(1.01) rotate(-0.3deg);
@@ -567,7 +554,7 @@ body::after {
             rgba(0, 255, 255, 0.05) 50%, 
             rgba(255, 0, 255, 0.05) 100%);
     }
-    /* GLITCH 2 - Reducido */
+
     5%, 6% {
         opacity: 0.15;
         transform: translateX(3px) translateY(1px) scale(0.99) rotate(0.2deg);
@@ -577,7 +564,7 @@ body::after {
             rgba(255, 255, 0, 0.04) 50%, 
             rgba(0, 0, 255, 0.04) 100%);
     }
-    /* GLITCH 3 - Reducido */
+
     12%, 13% {
         opacity: 0.1;
         transform: translateX(-2px) translateY(1px) scale(1.005) rotate(-0.1deg);
@@ -586,7 +573,7 @@ body::after {
             rgba(255, 165, 0, 0.03) 0%, 
             rgba(128, 0, 128, 0.03) 100%);
     }
-    /* GLITCH 7 - Reducido */
+
     45%, 46% {
         opacity: 0.15;
         transform: translateX(-3px) translateY(3px) scale(1.01) rotate(-0.2deg);
@@ -596,7 +583,7 @@ body::after {
             rgba(255, 0, 0, 0.04) 50%, 
             rgba(0, 255, 0, 0.04) 100%);
     }
-    /* GLITCH 9 - Reducido */
+
     72%, 73% {
         opacity: 0.1;
         transform: translateX(-1px) translateY(1px) scale(1.005) rotate(-0.1deg);
@@ -606,7 +593,7 @@ body::after {
             rgba(255, 0, 0, 0.02) 50%, 
             transparent 100%);
     }
-    /* GLITCH 10 - Reducido */
+
     88%, 89% {
         opacity: 0.08;
         transform: translateX(2px) translateY(-2px) scale(1.003) rotate(0.1deg);
@@ -621,7 +608,6 @@ body::after {
     }
 }
 
-/* Efecto glitch específico para el holograma */
 .hologram-glitch {
     position: absolute;
     top: 0;
@@ -737,7 +723,6 @@ body::after {
     }
 }
 
-/* Efecto de glitch para el contenido del holograma */
 .hologram-content::before {
     content: '';
     position: absolute;
@@ -809,7 +794,6 @@ body::after {
     }
 }
 
-/* Scrollbar personalizado para el contenido del holograma */
 #hologram-data::-webkit-scrollbar {
     width: 8px;
 }
@@ -829,7 +813,6 @@ body::after {
     background: rgba(0, 255, 255, 0.6);
 }
 
-/* Efecto de desenfoque VHS aleatorio */
 .vhs-blur {
     animation: vhsBlur 0.2s forwards;
 }
@@ -846,283 +829,97 @@ body::after {
     }
 }
 
-/* =========================== */
-/* MEDIA QUERIES CORREGIDOS */
-/* =========================== */
-
-/* Media Query para pantallas verticales - CORREGIDO */
-@media (max-height: 800px) and (orientation: portrait), 
-       (max-width: 768px) and (orientation: portrait) {
-    
+@media (max-width: 900px) {
     body {
         overflow-y: auto;
+        overflow-x: hidden;
         height: auto;
         min-height: 100vh;
-        align-items: flex-start;
+        display: block;
     }
-    
+
     #container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 15px 10px 80px 10px; /* Más padding abajo para el botón de gravedad */
-        overflow-y: auto;
         height: auto;
         min-height: 100vh;
-        width: 100%;
-        gap: 12px;
+        padding-bottom: 40px;
     }
-    
-    /* Reorganizar controles en columna - CORREGIDO */
-    #controls {
-        position: relative;
-        top: auto;
-        left: auto;
-        transform: none;
-        margin-bottom: 0;
-        order: 1;
-        width: 100%;
-        text-align: center;
-        padding: 10px 0;
-    }
-    
-    #mission-control {
-        position: relative;
-        top: auto;
-        left: auto;
-        margin-bottom: 0;
-        order: 2;
-        width: 95%;
-        max-width: 320px;
-    }
-    
-    #apollo-selector {
-        position: relative;
-        top: auto;
-        right: auto;
-        margin-bottom: 0;
-        order: 3;
-        width: 95%;
-        max-width: 320px;
-    }
-    
-    /* Contenedor de la luna con tamaño ajustado - CORREGIDO */
+
     #moon-container {
-        position: relative;
-        top: auto;
-        left: auto;
-        transform: none;
-        width: 85vw;
-        height: 85vw;
-        max-width: 350px;
-        max-height: 350px;
-        margin: 10px auto;
-        order: 4;
-        flex-shrink: 0;
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        width: 100%;
+        height: 100vh;
+        transform: translate(-50%, -50%);
+        z-index: 0;
     }
-    
-    #moon-phases {
-        position: relative;
-        bottom: auto;
-        left: auto;
-        margin-bottom: 0;
-        order: 5;
-        width: 95%;
-        max-width: 320px;
-    }
-    
+
+    #mission-control, 
+    #apollo-selector, 
+    #moon-phases, 
     #gravity-simulator {
         position: relative;
-        bottom: auto;
+        top: auto;
+        left: auto;
         right: auto;
-        margin-bottom: 0;
-        order: 6;
-        width: 95%;
-        max-width: 320px;
-        margin-top: 10px;
+        bottom: auto;
+        width: 90%;
+        max-width: 400px;
+        margin: 15px auto;
+        transform: none !important;
+        animation: panelGlitch 15s infinite;
     }
-    
-    /* Ajustar tamaño del holograma para pantallas verticales */
+
+    #controls {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding-top: 20px;
+        margin-bottom: 350px;
+        top: 0;
+    }
+
     #hologram-display {
-        min-width: 92vw;
-        max-width: 95vw;
-        max-height: 65vh;
-        top: 50%;
+        position: fixed !important; 
+        
+        top: 30%;
+        left: 50%;
+        
         transform: translate(-50%, -50%);
-        z-index: 1000;
+        
+        min-width: unset !important; 
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0;
+        height: auto !important;
+        max-height: 70vh; 
+        
+        z-index: 1000 !important; 
     }
-    
-    .hologram-content {
-        padding: 20px;
-    }
-    
+
     .hologram-header {
-        font-size: 20px;
+        font-size: 18px;
         margin-bottom: 15px;
     }
-    
+
     #hologram-data {
         font-size: 14px;
-        max-height: 45vh;
-        padding: 12px;
+        padding: 10px;
     }
-    
-    /* Ajustar botones de misión para pantallas pequeñas */
+
     .mission-buttons {
-        grid-template-columns: 1fr;
-        gap: 6px;
+        grid-template-columns: repeat(3, 1fr);
     }
-    
-    .mission-btn {
-        padding: 10px 8px;
-        font-size: 12px;
-    }
-    
-    /* Ajustar fases lunares */
+
     .phases-container {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 6px;
     }
     
     .phase {
-        flex: 1;
-        min-width: 70px;
-        font-size: 10px;
-        padding: 8px 4px;
-    }
-    
-    /* Ajustar métricas para pantallas pequeñas */
-    .metric {
-        font-size: 11px;
-        flex-direction: column;
-        text-align: center;
-        gap: 3px;
-        padding: 6px 0;
-    }
-    
-    /* Ajustar botones principales */
-    .control-btn {
-        padding: 12px 20px;
-        font-size: 14px;
-    }
-    
-    /* Reducir efectos para mejorar rendimiento en móviles */
-    .glitch-effect {
-        animation-duration: 8s;
-    }
-    
-    body::before {
-        animation-duration: 0.15s;
-    }
-    
-    .scanlines {
-        background-size: 100% 6px;
+        flex: 1 0 30%;
     }
 }
 
-/* Media Query adicional para pantallas muy estrechas - CORREGIDO */
-@media (max-width: 480px) and (orientation: portrait) {
-    #container {
-        padding: 10px 5px 70px 5px;
-        gap: 10px;
-    }
-    
-    #moon-container {
-        width: 80vw;
-        height: 80vw;
-        max-width: 300px;
-        max-height: 300px;
-    }
-    
-    .control-btn {
-        padding: 10px 16px;
-        font-size: 13px;
-    }
-    
-    .panel-header {
-        font-size: 12px;
-    }
-    
-    .mission-btn {
-        font-size: 11px;
-        padding: 8px 4px;
-    }
-    
-    .phase {
-        font-size: 9px;
-        padding: 6px 3px;
-        min-width: 60px;
-    }
-    
-    #hologram-display {
-        min-width: 96vw;
-    }
-    
-    .hologram-header {
-        font-size: 18px;
-    }
-    
-    #hologram-data {
-        font-size: 13px;
-        padding: 10px;
-    }
-    
-    .control-panel {
-        padding: 12px;
-    }
-}
-
-/* Media Query para pantallas muy altas - CORREGIDO */
-@media (min-height: 1000px) and (orientation: portrait) {
-    #container {
-        justify-content: center;
-        gap: 25px;
-        padding: 20px 10px;
-    }
-    
-    #moon-container {
-        width: 65vw;
-        height: 65vw;
-        max-width: 450px;
-        max-height: 450px;
-    }
-}
-
-/* Responsive general para tablets */
-@media (max-width: 768px) {
-    #hologram-display {
-        min-width: 90vw;
-        max-width: 95vw;
-        margin: 20px;
-    }
-    
-    .hologram-header {
-        font-size: 22px;
-    }
-    
-    #hologram-data {
-        font-size: 14px;
-        padding: 10px;
-    }
-    
-    .control-btn {
-        padding: 10px 20px;
-        font-size: 14px;
-    }
-    
-    .control-panel {
-        min-width: 150px;
-        padding: 10px;
-    }
-    
-    #mission-control, #apollo-selector {
-        top: 70px;
-    }
-    
-    #moon-phases, #gravity-simulator {
-        bottom: 10px;
-    }
-}

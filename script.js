@@ -15,12 +15,10 @@ const dragCoefficient = 0.05;
 const minAngularVelocity = 0.002;
 let isInertiaActive = false;
 
-// Variables para las estrellas
 let stars, stars2;
 const starFieldSize = 800;
 const starSpeed = 0.5;
 
-// Datos de misiones Apollo
 const apolloMissions = {
     11: {
         name: "APOLLO 11",
@@ -72,7 +70,6 @@ const apolloMissions = {
     }
 };
 
-// Datos NASA actualizados
 let availableMoonData = [];
 const allMoonData = [
     "El diámetro de la Luna es de aproximadamente 3,474 kilómetros, lo que equivale a cerca de una cuarta parte del tamaño de la Tierra, aunque su volumen es apenas una cincuentava parte.",
@@ -131,6 +128,7 @@ function init() {
     }
 
     createMoon();
+    adjustResponsiveSize();
     createMovingStars();
     setupControls();
     setupEventListeners();
@@ -138,7 +136,6 @@ function init() {
     createVHSEffect();
     startRandomEffects();
 
-    // Inicializar tiempos separados
     previousMoonTime = performance.now();
     previousStarTime = performance.now();
     previousDataUpdate = performance.now();
@@ -206,7 +203,6 @@ function triggerScreenGlitch() {
 }
 
 function createMovingStars() {
-    // Crear primera capa de estrellas
     const starsGeometry = new THREE.BufferGeometry();
     const starsCount = 800;
     const positions = new Float32Array(starsCount * 3);
@@ -234,7 +230,6 @@ function createMovingStars() {
     stars = new THREE.Points(starsGeometry, starsMaterial);
     scene.add(stars);
 
-    // Crear segunda capa de estrellas
     const starsGeometry2 = new THREE.BufferGeometry();
     const starsCount2 = 1200;
     const positions2 = new Float32Array(starsCount2 * 3);
@@ -273,7 +268,6 @@ function updateStars() {
     const positions = stars.geometry.attributes.position.array;
     const positions2 = stars2.geometry.attributes.position.array;
     
-    // Mover estrellas hacia la cámara
     for (let i = 0; i < positions.length; i += 3) {
         positions[i + 2] += starSpeed * deltaTime * 60;
         
@@ -284,7 +278,6 @@ function updateStars() {
         }
     }
     
-    // Mover segunda capa de estrellas más rápido
     for (let i = 0; i < positions2.length; i += 3) {
         positions2[i + 2] += starSpeed * 2 * deltaTime * 60;
         
@@ -301,16 +294,14 @@ function updateStars() {
 
 function updateRealTimeData() {
     const currentTime = performance.now();
-    if (currentTime - previousDataUpdate < 1000) return; // Actualizar cada segundo
+    if (currentTime - previousDataUpdate < 1000) return;
     
     previousDataUpdate = currentTime;
     
-    // Simular datos en tiempo real
     const timeVariation = Date.now() * 0.0001;
     const distance = 384400 + Math.sin(timeVariation) * 1000;
     const speed = 1.02 + Math.cos(timeVariation * 2) * 0.1;
     
-    // Temperatura que cambia según la "posición" (simulada)
     const tempPhase = Math.sin(timeVariation * 0.5);
     const currentTemp = tempPhase > 0 ? 
         Math.round(20 + tempPhase * 107) : 
@@ -406,7 +397,6 @@ function setupControls() {
     if (closeHologram) closeHologram.addEventListener('click', closeHologramDisplay);
     if (jumpSimulator) jumpSimulator.addEventListener('click', simulateLunarJump);
 
-    // Configurar botones de misiones Apollo
     document.querySelectorAll('.mission-btn[data-mission]').forEach(btn => {
         btn.addEventListener('click', function() {
             const missionNumber = this.getAttribute('data-mission');
@@ -414,7 +404,6 @@ function setupControls() {
         });
     });
 
-    // Configurar fases lunares
     document.querySelectorAll('.phase').forEach(phase => {
         phase.addEventListener('click', function() {
             document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
@@ -453,8 +442,8 @@ function showMoonPhaseInfo(phase) {
 }
 
 function simulateLunarJump() {
-    const earthJump = 0.5; // metros en la Tierra
-    const lunarJump = earthJump / 0.165; // Gravedad lunar es 16.5% de la terrestre
+    const earthJump = 0.5;
+    const lunarJump = earthJump / 0.165;
     
     const result = `
         En la Tierra: ${earthJump.toFixed(1)} m de salto<br>
@@ -464,7 +453,6 @@ function simulateLunarJump() {
     
     document.getElementById('jump-result').innerHTML = result;
     
-    // Efecto visual
     const jumpBtn = document.getElementById('jump-simulator');
     jumpBtn.style.animation = 'none';
     setTimeout(() => {
@@ -544,7 +532,7 @@ function closeHologramDisplay() {
     if (hologram) {
         hologram.style.animation = 'none';
         hologram.style.transform = 'translate(-50%, -50%) scale(1.1) rotate(-3deg)';
-        hologram.style.opacity = '0.5';  // ← CORREGIDO: era element.style.opacity
+        hologram.style.opacity = '0.5';
         hologram.style.filter = 'hue-rotate(270deg) brightness(0.5)';
         
         setTimeout(() => {
@@ -564,9 +552,13 @@ function setupEventListeners() {
     container.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
+    
+    container.addEventListener('touchstart', onTouchStart, { passive: false });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onMouseUp);
+    
     window.addEventListener('resize', onWindowResize);
 }
-
 function onMouseDown(e) {
     isDragging = true;
     autoRotate = false;
@@ -633,6 +625,57 @@ function onMouseUp() {
     }
 }
 
+function onTouchStart(e) {
+    if (e.touches.length === 1) {
+
+        isDragging = true;
+        autoRotate = false;
+        isInertiaActive = false;
+        angularVelocity = { x: 0, y: 0, z: 0 };
+
+        previousMousePosition = {
+            x: e.touches[0].clientX,
+            y: e.touches[0].clientY
+        };
+        previousMoonTime = performance.now();
+    }
+}
+
+function onTouchMove(e) {
+    if (!isDragging || !moon || e.touches.length !== 1) return;
+
+    const currentTime = performance.now();
+    const deltaTime = (currentTime - previousMoonTime) / 1000;
+
+    if (deltaTime > 0) {
+        const deltaMove = {
+            x: e.touches[0].clientX - previousMousePosition.x,
+            y: e.touches[0].clientY - previousMousePosition.y
+        };
+
+        const touchSensitivity = 0.15; 
+
+        angularVelocity.x = deltaMove.y * touchSensitivity;
+        angularVelocity.y = deltaMove.x * touchSensitivity;
+
+        const deltaQuaternion = new THREE.Quaternion()
+            .setFromEuler(new THREE.Euler(
+                deltaMove.y * 0.006,
+                deltaMove.x * 0.006,
+                0,
+                'XYZ'
+            ));
+
+        moon.quaternion.premultiply(deltaQuaternion);
+
+        previousMousePosition = {
+            x: e.touches[0].clientX,
+            y: e.touches[0].clientY
+        };
+        previousMoonTime = currentTime;
+    }
+}
+
 function applyInertia(deltaTime) {
     if (!moon) return false;
     
@@ -665,10 +708,21 @@ function applyInertia(deltaTime) {
     return true;
 }
 
+function adjustResponsiveSize() {
+    if (!moon) return;
+
+    if (window.innerWidth < 900) {
+        moon.scale.set(0.6, 0.6, 0.6); 
+    } else {
+        moon.scale.set(1, 1, 1);
+    }
+}
+
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    adjustResponsiveSize();
 }
 
 function animate() {
@@ -676,13 +730,10 @@ function animate() {
     
     const currentTime = performance.now();
     
-    // Actualizar estrellas con su propio tiempo
     updateStars();
     
-    // Actualizar datos en tiempo real
     updateRealTimeData();
-    
-    // Actualizar luna con su tiempo separado
+
     const moonDeltaTime = (currentTime - previousMoonTime) / 1000;
     previousMoonTime = currentTime;
 
