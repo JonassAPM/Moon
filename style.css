@@ -846,7 +846,252 @@ body::after {
     }
 }
 
-/* Responsive */
+/* =========================== */
+/* MEDIA QUERIES CORREGIDOS */
+/* =========================== */
+
+/* Media Query para pantallas verticales - CORREGIDO */
+@media (max-height: 800px) and (orientation: portrait), 
+       (max-width: 768px) and (orientation: portrait) {
+    
+    body {
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+        align-items: flex-start;
+    }
+    
+    #container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 15px 10px 80px 10px; /* Más padding abajo para el botón de gravedad */
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+        width: 100%;
+        gap: 12px;
+    }
+    
+    /* Reorganizar controles en columna - CORREGIDO */
+    #controls {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        margin-bottom: 0;
+        order: 1;
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+    }
+    
+    #mission-control {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin-bottom: 0;
+        order: 2;
+        width: 95%;
+        max-width: 320px;
+    }
+    
+    #apollo-selector {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: 0;
+        order: 3;
+        width: 95%;
+        max-width: 320px;
+    }
+    
+    /* Contenedor de la luna con tamaño ajustado - CORREGIDO */
+    #moon-container {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        width: 85vw;
+        height: 85vw;
+        max-width: 350px;
+        max-height: 350px;
+        margin: 10px auto;
+        order: 4;
+        flex-shrink: 0;
+    }
+    
+    #moon-phases {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        margin-bottom: 0;
+        order: 5;
+        width: 95%;
+        max-width: 320px;
+    }
+    
+    #gravity-simulator {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin-bottom: 0;
+        order: 6;
+        width: 95%;
+        max-width: 320px;
+        margin-top: 10px;
+    }
+    
+    /* Ajustar tamaño del holograma para pantallas verticales */
+    #hologram-display {
+        min-width: 92vw;
+        max-width: 95vw;
+        max-height: 65vh;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+    }
+    
+    .hologram-content {
+        padding: 20px;
+    }
+    
+    .hologram-header {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    #hologram-data {
+        font-size: 14px;
+        max-height: 45vh;
+        padding: 12px;
+    }
+    
+    /* Ajustar botones de misión para pantallas pequeñas */
+    .mission-buttons {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    
+    .mission-btn {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+    
+    /* Ajustar fases lunares */
+    .phases-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+    
+    .phase {
+        flex: 1;
+        min-width: 70px;
+        font-size: 10px;
+        padding: 8px 4px;
+    }
+    
+    /* Ajustar métricas para pantallas pequeñas */
+    .metric {
+        font-size: 11px;
+        flex-direction: column;
+        text-align: center;
+        gap: 3px;
+        padding: 6px 0;
+    }
+    
+    /* Ajustar botones principales */
+    .control-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    /* Reducir efectos para mejorar rendimiento en móviles */
+    .glitch-effect {
+        animation-duration: 8s;
+    }
+    
+    body::before {
+        animation-duration: 0.15s;
+    }
+    
+    .scanlines {
+        background-size: 100% 6px;
+    }
+}
+
+/* Media Query adicional para pantallas muy estrechas - CORREGIDO */
+@media (max-width: 480px) and (orientation: portrait) {
+    #container {
+        padding: 10px 5px 70px 5px;
+        gap: 10px;
+    }
+    
+    #moon-container {
+        width: 80vw;
+        height: 80vw;
+        max-width: 300px;
+        max-height: 300px;
+    }
+    
+    .control-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+    
+    .panel-header {
+        font-size: 12px;
+    }
+    
+    .mission-btn {
+        font-size: 11px;
+        padding: 8px 4px;
+    }
+    
+    .phase {
+        font-size: 9px;
+        padding: 6px 3px;
+        min-width: 60px;
+    }
+    
+    #hologram-display {
+        min-width: 96vw;
+    }
+    
+    .hologram-header {
+        font-size: 18px;
+    }
+    
+    #hologram-data {
+        font-size: 13px;
+        padding: 10px;
+    }
+    
+    .control-panel {
+        padding: 12px;
+    }
+}
+
+/* Media Query para pantallas muy altas - CORREGIDO */
+@media (min-height: 1000px) and (orientation: portrait) {
+    #container {
+        justify-content: center;
+        gap: 25px;
+        padding: 20px 10px;
+    }
+    
+    #moon-container {
+        width: 65vw;
+        height: 65vw;
+        max-width: 450px;
+        max-height: 450px;
+    }
+}
+
+/* Responsive general para tablets */
 @media (max-width: 768px) {
     #hologram-display {
         min-width: 90vw;
