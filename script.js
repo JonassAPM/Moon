@@ -712,7 +712,7 @@ function adjustResponsiveSize() {
     if (!moon) return;
 
     if (window.innerWidth < 900) {
-        moon.scale.set(0.6, 0.6, 0.6); 
+        moon.scale.set(0.5, 0.5, 0.5); 
     } else {
         moon.scale.set(1, 1, 1);
     }
@@ -722,7 +722,6 @@ function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    adjustResponsiveSize();
 }
 
 function animate() {

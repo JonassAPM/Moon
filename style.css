@@ -846,7 +846,7 @@ body::after {
 
     #moon-container {
         position: fixed;
-        top: 30%;
+        top: 28%;
         left: 50%;
         width: 100%;
         height: 100vh;
@@ -889,8 +889,8 @@ body::after {
         transform: translate(-50%, -50%);
         
         min-width: unset !important; 
-        width: 100% !important;
-        max-width: 100% !important;
+        width: 90% !important;
+        max-width: 90% !important;
         margin: 0;
         height: auto !important;
         max-height: 70vh; 
