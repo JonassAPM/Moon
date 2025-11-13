@@ -1,0 +1,883 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+    overflow: hidden;
+    font-family: 'Courier New', monospace;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Efecto VHS principal */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.3) 0px,
+            rgba(0, 0, 0, 0.3) 2px,
+            transparent 2px,
+            transparent 4px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.08) 0px,
+            rgba(255, 255, 255, 0.08) 2px,
+            transparent 2px,
+            transparent 8px
+        ),
+        radial-gradient(
+            circle at 50% 50%,
+            transparent 0%,
+            rgba(255, 255, 255, 0.02) 100%
+        );
+    pointer-events: none;
+    z-index: 25;
+    animation: vhsNoise 0.08s infinite;
+    mix-blend-mode: overlay;
+}
+
+@keyframes vhsNoise {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.9;
+    }
+    25% {
+        transform: translateY(1px) translateX(-1px);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-1px) translateX(1px);
+        opacity: 0.8;
+    }
+    75% {
+        transform: translateY(2px) translateX(-2px);
+        opacity: 1;
+    }
+}
+
+/* Efecto de escaneo VHS */
+body::after {
+    content: '';
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 255, 255, 0.1) 50%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 26;
+    animation: vhsScan 3s linear infinite;
+    mix-blend-mode: screen;
+}
+
+@keyframes vhsScan {
+    0% {
+        top: -100%;
+    }
+    100% {
+        top: 100%;
+    }
+}
+
+#container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+#moon-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    width: 100%;
+    height: 100%;
+}
+
+#moon-container:active {
+    cursor: grabbing;
+}
+
+/* Controles Principales */
+#controls {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+
+/* Proteger el botón NASA de los efectos VHS y glitch */
+#nasa-mode {
+    position: relative;
+    z-index: 150 !important;
+    isolation: isolate;
+    mix-blend-mode: normal !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+}
+
+/* Anular todos los efectos que podrían afectar al botón */
+#nasa-mode::before,
+#nasa-mode::after {
+    display: none !important;
+}
+
+.control-btn {
+    background: rgba(0, 0, 0, 0.9);
+    color: #0f0;
+    border: 2px solid #0f0;
+    padding: 12px 25px;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    cursor: pointer;
+    text-shadow: 0 0 15px #0f0;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: buttonGlitch 5s infinite;
+}
+
+@keyframes buttonGlitch {
+    0%, 97%, 99%, 100% {
+        transform: translateX(0) skew(0deg);
+        text-shadow: 0 0 15px #0f0;
+        filter: none;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+    }
+    98% {
+        transform: translateX(-2px) skew(-1deg);
+        text-shadow: 2px 0 20px #0f0, -2px 0 20px #0f0;
+        filter: brightness(1.2);
+        box-shadow: 0 0 25px rgba(0, 255, 0, 0.9);
+    }
+}
+
+.control-btn:hover {
+    background: rgba(0, 255, 0, 0.2);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 1);
+    transform: scale(1.05);
+    filter: none !important;
+}
+
+.control-btn.active {
+    background: rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 40px #0f0;
+}
+
+.control-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.control-btn:hover::before {
+    left: 100%;
+}
+
+/* Paneles de Control */
+.control-panel {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid #0ff;
+    padding: 15px;
+    border-radius: 5px;
+    backdrop-filter: blur(5px);
+    z-index: 90;
+    animation: panelGlitch 15s infinite;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+@keyframes panelGlitch {
+    0%, 96%, 98%, 100% {
+        transform: translateX(0);
+        border-color: #0ff;
+    }
+    97% {
+        transform: translateX(1px);
+        border-color: #f0f;
+    }
+    99% {
+        transform: translateX(-1px);
+        border-color: #0f0;
+    }
+}
+
+.panel-header {
+    color: #0ff;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+    text-shadow: 0 0 10px #0ff;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.metric {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    font-size: 12px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.metric .label {
+    color: #0f0;
+    text-shadow: 0 0 5px #0f0;
+}
+
+.metric .value {
+    color: #0ff;
+    text-shadow: 0 0 5px #0ff;
+    font-weight: bold;
+}
+
+/* Posicionamiento de Paneles */
+#mission-control {
+    top: 80px;
+    left: 20px;
+    min-width: 250px;
+}
+
+#apollo-selector {
+    top: 80px;
+    right: 20px;
+    min-width: 200px;
+}
+
+#moon-phases {
+    bottom: 20px;
+    left: 20px;
+    min-width: 180px;
+}
+
+#gravity-simulator {
+    bottom: 20px;
+    right: 20px;
+    min-width: 200px;
+}
+
+/* Botones de Misión */
+.mission-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.mission-btn {
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid #0ff;
+    color: #0ff;
+    padding: 8px 5px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 5px #0ff;
+}
+
+.mission-btn:hover {
+    background: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 10px #0ff;
+    transform: scale(1.05);
+}
+
+/* Fases Lunares */
+.phases-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.phase {
+    padding: 6px 10px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid #0ff;
+    color: #0ff;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 11px;
+}
+
+.phase.active, .phase:hover {
+    background: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 8px #0ff;
+}
+
+/* Simulador de Gravedad */
+.gravity-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.gravity-value {
+    color: #0f0;
+    text-shadow: 0 0 5px #0f0;
+    font-size: 12px;
+    text-align: center;
+}
+
+.jump-result {
+    color: #0ff;
+    text-shadow: 0 0 5px #0ff;
+    font-size: 11px;
+    text-align: center;
+    min-height: 20px;
+}
+
+/* Holograma */
+#hologram-display {
+    position: fixed;
+    top: 44%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 500px;
+    max-width: 800px;
+    min-height: 200px;
+    background: linear-gradient(135deg, 
+        rgba(0, 255, 255, 0.2) 0%, 
+        rgba(255, 0, 255, 0.2) 50%, 
+        rgba(0, 255, 0, 0.2) 100%);
+    border: 4px solid #0ff;
+    box-shadow: 
+        0 0 80px rgba(0, 255, 255, 0.8),
+        inset 0 0 60px rgba(255, 0, 255, 0.4);
+    z-index: 100;
+    animation: hologramFloat 3s ease-in-out infinite;
+    backdrop-filter: blur(10px);
+    transform-origin: center center;
+}
+
+.hologram-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.95);
+    min-height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.hologram-header {
+    color: #0ff;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 25px;
+    text-shadow: 0 0 20px #0ff;
+    animation: textGlitch 2s infinite;
+    font-weight: bold;
+    letter-spacing: 2px;
+    position: relative;
+}
+
+#hologram-data {
+    color: #0f0;
+    font-size: 16px;
+    line-height: 1.7;
+    flex-grow: 1;
+    text-shadow: 0 0 10px #0f0;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    background: rgba(0, 20, 20, 0.6);
+    max-height: 60vh;
+    overflow-y: auto;
+    position: relative;
+    animation: textDataGlitch 8s infinite;
+}
+
+@keyframes textDataGlitch {
+    0%, 94%, 96%, 98%, 100% {
+        transform: translateX(0) skew(0deg);
+        text-shadow: 0 0 10px #0f0;
+        filter: brightness(1) contrast(1) hue-rotate(0deg);
+    }
+    95% {
+        transform: translateX(-1px) skew(-0.5deg);
+        text-shadow: 1px 0 8px rgba(255, 0, 255, 0.3), -1px 0 8px rgba(0, 255, 255, 0.3);
+        filter: brightness(1.05) contrast(0.95) hue-rotate(15deg);
+    }
+    97% {
+        transform: translateX(1px) skew(0.5deg);
+        text-shadow: -1px 0 8px rgba(0, 255, 255, 0.3), 1px 0 8px rgba(255, 0, 255, 0.3);
+        filter: brightness(0.95) contrast(1.05) hue-rotate(-15deg);
+    }
+}
+
+#close-hologram {
+    background: rgba(92, 0, 0, 0.4);
+    color: #f00;
+    border: 2px solid #f00;
+    padding: 12px 25px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    text-shadow: 0 0 10px #f00;
+    box-shadow: 0 0 20px rgba(143, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    align-self: center;
+    min-width: 150px;
+    position: relative;
+    overflow: hidden;
+    animation: closeButtonGlitch 6s infinite;
+}
+
+@keyframes closeButtonGlitch {
+    0%, 95%, 97%, 100% {
+        transform: translateX(0) skew(0deg);
+        filter: hue-rotate(0deg);
+    }
+    96% {
+        transform: translateX(1px) skew(0.5deg);
+        filter: hue-rotate(45deg);
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+    }
+}
+
+#close-hologram:hover {
+    background: rgba(255, 0, 0, 0.6);
+    box-shadow: 0 0 30px rgba(90, 0, 0, 0.8);
+}
+
+#close-hologram::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(197, 0, 0, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+#close-hologram:hover::before {
+    left: 100%;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Efectos Visuales */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        transparent 50%,
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 20;
+    animation: scanline 6s linear infinite;
+    mix-blend-mode: overlay;
+}
+
+@keyframes scanline {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 100%;
+    }
+}
+
+.vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 0%,
+        rgba(0, 0, 0, 0.3) 40%,
+        rgba(0, 0, 0, 0.7) 70%,
+        rgba(0, 0, 0, 0.95) 100%
+    );
+    pointer-events: none;
+    z-index: 15;
+}
+
+/* EFECTO GLITCH COMPLETO MEJORADO */
+.glitch-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    animation: glitchMaster 4s infinite;
+}
+
+@keyframes glitchMaster {
+    0%, 100% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+        filter: hue-rotate(0deg) brightness(1) contrast(1);
+    }
+    /* GLITCH 1 - Reducido */
+    2%, 3% {
+        opacity: 0.2;
+        transform: translateX(-5px) translateY(-2px) scale(1.01) rotate(-0.3deg);
+        filter: hue-rotate(30deg) brightness(1.1) contrast(1.05);
+        background: linear-gradient(45deg, 
+            rgba(255, 0, 0, 0.05) 0%, 
+            rgba(0, 255, 255, 0.05) 50%, 
+            rgba(255, 0, 255, 0.05) 100%);
+    }
+    /* GLITCH 2 - Reducido */
+    5%, 6% {
+        opacity: 0.15;
+        transform: translateX(3px) translateY(1px) scale(0.99) rotate(0.2deg);
+        filter: hue-rotate(60deg) brightness(0.95) contrast(1.1);
+        background: linear-gradient(-45deg, 
+            rgba(0, 255, 0, 0.04) 0%, 
+            rgba(255, 255, 0, 0.04) 50%, 
+            rgba(0, 0, 255, 0.04) 100%);
+    }
+    /* GLITCH 3 - Reducido */
+    12%, 13% {
+        opacity: 0.1;
+        transform: translateX(-2px) translateY(1px) scale(1.005) rotate(-0.1deg);
+        filter: hue-rotate(90deg) brightness(1.05) contrast(0.98);
+        background: radial-gradient(circle, 
+            rgba(255, 165, 0, 0.03) 0%, 
+            rgba(128, 0, 128, 0.03) 100%);
+    }
+    /* GLITCH 7 - Reducido */
+    45%, 46% {
+        opacity: 0.15;
+        transform: translateX(-3px) translateY(3px) scale(1.01) rotate(-0.2deg);
+        filter: hue-rotate(45deg) brightness(1.05) contrast(0.95);
+        background: linear-gradient(135deg, 
+            rgba(0, 255, 255, 0.04) 0%, 
+            rgba(255, 0, 0, 0.04) 50%, 
+            rgba(0, 255, 0, 0.04) 100%);
+    }
+    /* GLITCH 9 - Reducido */
+    72%, 73% {
+        opacity: 0.1;
+        transform: translateX(-1px) translateY(1px) scale(1.005) rotate(-0.1deg);
+        filter: hue-rotate(30deg) brightness(1.03) contrast(0.97);
+        background: radial-gradient(circle at center, 
+            rgba(255, 255, 0, 0.02) 0%, 
+            rgba(255, 0, 0, 0.02) 50%, 
+            transparent 100%);
+    }
+    /* GLITCH 10 - Reducido */
+    88%, 89% {
+        opacity: 0.08;
+        transform: translateX(2px) translateY(-2px) scale(1.003) rotate(0.1deg);
+        filter: hue-rotate(60deg) brightness(1.02) contrast(0.99);
+        background: conic-gradient(
+            from 180deg,
+            rgba(255, 0, 0, 0.01),
+            rgba(0, 255, 0, 0.01),
+            rgba(0, 0, 255, 0.01),
+            rgba(255, 255, 0, 0.01)
+        );
+    }
+}
+
+/* Efecto glitch específico para el holograma */
+.hologram-glitch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 101;
+    opacity: 0;
+    animation: hologramGlitch 6s infinite;
+    mix-blend-mode: overlay;
+}
+
+@keyframes hologramGlitch {
+    0%, 92%, 94%, 96%, 98%, 100% {
+        opacity: 0;
+        transform: translateX(0) scale(1);
+        filter: hue-rotate(0deg);
+    }
+    93% {
+        opacity: 0.3;
+        transform: translateX(-3px) scale(1.01);
+        filter: hue-rotate(30deg);
+        background: linear-gradient(45deg, 
+            transparent 0%, 
+            rgba(255, 0, 0, 0.1) 50%, 
+            transparent 100%);
+    }
+    95% {
+        opacity: 0.2;
+        transform: translateX(3px) scale(0.99);
+        filter: hue-rotate(60deg);
+        background: linear-gradient(-45deg, 
+            transparent 0%, 
+            rgba(0, 255, 255, 0.1) 50%, 
+            transparent 100%);
+    }
+    97% {
+        opacity: 0.15;
+        transform: translateX(-1px) scale(1.005);
+        filter: hue-rotate(45deg);
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(255, 255, 0, 0.08) 50%, 
+            transparent 100%);
+    }
+    99% {
+        opacity: 0.1;
+        transform: translateX(1px) scale(0.995);
+        filter: hue-rotate(15deg);
+        background: linear-gradient(0deg, 
+            transparent 0%, 
+            rgba(255, 0, 255, 0.08) 50%, 
+            transparent 100%);
+    }
+}
+
+@keyframes hologramFloat {
+    0%, 100% {
+        transform: translate(-50%, -50%) translateY(0px) rotate(0deg) scale(1);
+        filter: brightness(1) contrast(1);
+    }
+    25% {
+        transform: translate(-50%, -50%) translateY(-8px) rotate(0.5deg) scale(1.002);
+        filter: brightness(1.05) contrast(1.02);
+    }
+    50% {
+        transform: translate(-50%, -50%) translateY(-12px) rotate(-0.5deg) scale(0.998);
+        filter: brightness(0.95) contrast(1.05);
+    }
+    75% {
+        transform: translate(-50%, -50%) translateY(-5px) rotate(0.3deg) scale(1.001);
+        filter: brightness(1.02) contrast(0.98);
+    }
+}
+
+@keyframes textGlitch {
+    0%, 88%, 90%, 92%, 94%, 96%, 100% {
+        transform: translateX(0) skew(0deg) scale(1);
+        text-shadow: 0 0 20px #0ff;
+        filter: brightness(1) contrast(1);
+        letter-spacing: 2px;
+    }
+    89% {
+        transform: translateX(-2px) skew(-1deg) scale(1.01);
+        text-shadow: 1px 0 15px rgba(255, 0, 255, 0.5), -1px 0 15px rgba(0, 255, 255, 0.5);
+        filter: brightness(1.1) contrast(0.9);
+        letter-spacing: 2.5px;
+    }
+    91% {
+        transform: translateX(2px) skew(1deg) scale(0.99);
+        text-shadow: -1px 0 15px rgba(0, 255, 255, 0.5), 1px 0 15px rgba(255, 0, 255, 0.5);
+        filter: brightness(0.9) contrast(1.1);
+        letter-spacing: 1.5px;
+    }
+    93% {
+        transform: translateX(-1px) skew(-0.5deg) scale(1.005);
+        text-shadow: 0.5px 0 12px rgba(255, 255, 0, 0.4), -0.5px 0 12px rgba(0, 255, 255, 0.4);
+        filter: brightness(1.05) contrast(0.95);
+        letter-spacing: 2.2px;
+    }
+    95% {
+        transform: translateX(1px) skew(0.5deg) scale(0.995);
+        text-shadow: -0.5px 0 12px rgba(0, 255, 255, 0.4), 0.5px 0 12px rgba(255, 255, 0, 0.4);
+        filter: brightness(0.95) contrast(1.05);
+        letter-spacing: 1.8px;
+    }
+    97% {
+        transform: translateX(0) skew(0deg) scale(1);
+        text-shadow: 0 0 20px #0ff;
+        filter: brightness(1) contrast(1);
+        letter-spacing: 2px;
+    }
+}
+
+/* Efecto de glitch para el contenido del holograma */
+.hologram-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
+    z-index: 1;
+    animation: contentGlitch 8s infinite;
+    mix-blend-mode: color-dodge;
+}
+
+@keyframes contentGlitch {
+    0%, 78%, 81%, 84%, 87%, 90%, 93%, 96%, 100% {
+        opacity: 0;
+        transform: translateX(0) translateY(0);
+        filter: hue-rotate(0deg);
+    }
+    79% {
+        opacity: 0.15;
+        transform: translateX(-2px) translateY(1px);
+        filter: hue-rotate(30deg);
+        background: linear-gradient(45deg, 
+            rgba(255, 0, 0, 0.05) 0%, 
+            transparent 50%);
+    }
+    82% {
+        opacity: 0.1;
+        transform: translateX(2px) translateY(-1px);
+        filter: hue-rotate(60deg);
+        background: linear-gradient(-45deg, 
+            rgba(0, 255, 255, 0.05) 0%, 
+            transparent 50%);
+    }
+    85% {
+        opacity: 0.08;
+        transform: translateX(-1px) translateY(2px);
+        filter: hue-rotate(15deg);
+        background: linear-gradient(90deg, 
+            rgba(255, 255, 0, 0.04) 0%, 
+            transparent 50%);
+    }
+    88% {
+        opacity: 0.12;
+        transform: translateX(1px) translateY(-2px);
+        filter: hue-rotate(45deg);
+        background: linear-gradient(0deg, 
+            rgba(255, 0, 255, 0.04) 0%, 
+            transparent 50%);
+    }
+    91% {
+        opacity: 0.18;
+        transform: translateX(-3px) translateY(3px);
+        filter: hue-rotate(90deg);
+        background: radial-gradient(circle, 
+            rgba(0, 255, 0, 0.06) 0%, 
+            transparent 70%);
+    }
+    94% {
+        opacity: 0.2;
+        transform: translateX(3px) translateY(-3px);
+        filter: hue-rotate(120deg);
+        background: linear-gradient(135deg, 
+            rgba(255, 0, 0, 0.03) 0%, 
+            rgba(0, 255, 255, 0.03) 50%, 
+            transparent 100%);
+    }
+}
+
+/* Scrollbar personalizado para el contenido del holograma */
+#hologram-data::-webkit-scrollbar {
+    width: 8px;
+}
+
+#hologram-data::-webkit-scrollbar-track {
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+#hologram-data::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.4);
+    border-radius: 4px;
+    border: 1px solid rgba(0, 255, 255, 0.6);
+}
+
+#hologram-data::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.6);
+}
+
+/* Efecto de desenfoque VHS aleatorio */
+.vhs-blur {
+    animation: vhsBlur 0.2s forwards;
+}
+
+@keyframes vhsBlur {
+    0% {
+        filter: blur(0px) brightness(1);
+    }
+    50% {
+        filter: blur(2px) brightness(1.2);
+    }
+    100% {
+        filter: blur(0px) brightness(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #hologram-display {
+        min-width: 90vw;
+        max-width: 95vw;
+        margin: 20px;
+    }
+    
+    .hologram-header {
+        font-size: 22px;
+    }
+    
+    #hologram-data {
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    .control-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .control-panel {
+        min-width: 150px;
+        padding: 10px;
+    }
+    
+    #mission-control, #apollo-selector {
+        top: 70px;
+    }
+    
+    #moon-phases, #gravity-simulator {
+        bottom: 10px;
+    }
+}

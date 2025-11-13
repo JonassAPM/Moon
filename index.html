@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luna 3D - Datos NASA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container">
+        <div id="moon-container"></div>
+        
+        <!-- Panel de Control Principal -->
+        <div id="controls">
+            <button id="nasa-mode" class="control-btn">DATOS NASA</button>
+        </div>
+
+        <!-- Panel de Control de Misión -->
+        <div id="mission-control" class="control-panel">
+            <div class="panel-header">CONTROL DE MISIÓN</div>
+            <div class="panel-content">
+                <div class="metric">
+                    <span class="label">VELOCIDAD ORBITAL:</span>
+                    <span class="value" id="orbital-speed">1.02 km/s</span>
+                </div>
+                <div class="metric">
+                    <span class="label">DISTANCIA TIERRA-LUNA:</span>
+                    <span class="value" id="earth-distance">384,400 km</span>
+                </div>
+                <div class="metric">
+                    <span class="label">TEMPERATURA SUPERFICIAL:</span>
+                    <span class="value" id="surface-temp">-173°C / 127°C</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selector de Misiones Apollo -->
+        <div id="apollo-selector" class="control-panel">
+            <div class="panel-header">MISIONES APOLLO</div>
+            <div class="mission-buttons">
+                <button class="mission-btn" data-mission="11">APOLLO 11</button>
+                <button class="mission-btn" data-mission="12">APOLLO 12</button>
+                <button class="mission-btn" data-mission="14">APOLLO 14</button>
+                <button class="mission-btn" data-mission="15">APOLLO 15</button>
+                <button class="mission-btn" data-mission="16">APOLLO 16</button>
+                <button class="mission-btn" data-mission="17">APOLLO 17</button>
+            </div>
+        </div>
+
+        <!-- Fases Lunares -->
+        <div id="moon-phases" class="control-panel">
+            <div class="panel-header">FASES LUNARES</div>
+            <div class="phases-container">
+                <div class="phase active" data-phase="new">NUEVA</div>
+                <div class="phase" data-phase="waxing">CRECIENTE</div>
+                <div class="phase" data-phase="first">CUARTO</div>
+                <div class="phase" data-phase="waxing-g">GIBOSA</div>
+                <div class="phase" data-phase="full">LLENA</div>
+            </div>
+        </div>
+
+        <!-- Simulador de Gravedad -->
+        <div id="gravity-simulator" class="control-panel">
+            <div class="panel-header">GRAVEDAD LUNAR</div>
+            <div class="gravity-content">
+                <div class="gravity-value">1.62 m/s² (16.5% Tierra)</div>
+                <button id="jump-simulator" class="mission-btn">SIMULAR SALTO</button>
+                <div class="jump-result" id="jump-result"></div>
+            </div>
+        </div>
+
+        <!-- Holograma de Datos -->
+        <div id="hologram-display" class="hidden">
+            <div class="hologram-content">
+                <div class="hologram-header" id="hologram-title">DATOS LUNARES - NASA</div>
+                <div id="hologram-data"></div>
+                <button id="close-hologram">CERRAR</button>
+            </div>
+        </div>
+
+        <!-- Efectos Visuales -->
+        <div class="scanlines"></div>
+        <div class="vignette"></div>
+        <div class="glitch-effect"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
